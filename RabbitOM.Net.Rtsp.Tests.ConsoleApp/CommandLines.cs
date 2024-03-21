@@ -7,9 +7,9 @@ namespace RabbitOM.Net.Rtsp.Tests.ConsoleApp
     public sealed class CommandLines
     {
         private readonly string[] _args;
-        
-        private readonly bool _sinkOption ;
-        
+
+        private readonly bool _sinkOption;
+
         private readonly string _uriOption = string.Empty;
 
         private readonly string _uri = string.Empty;
@@ -25,17 +25,17 @@ namespace RabbitOM.Net.Rtsp.Tests.ConsoleApp
 
 
 
-        public CommandLines( string[] args )
+        public CommandLines(string[] args)
         {
-            _args = args ?? throw new ArgumentNullException( nameof( args ) );
+            _args = args ?? throw new ArgumentNullException(nameof(args));
 
-            _uriOption = args.FirstOrDefault();
+            _uriOption = args.FirstOrDefault() ?? string.Empty;
 
-            _sinkOption = args.Any( x => x == "-sink" );
+            _sinkOption = args.Any(x => x == "-sink");
 
-            if ( RTSPUri.TryParse( _uriOption , out RTSPUri uri ) )
+            if (RTSPUri.TryParse(_uriOption, out RTSPUri uri))
             {
-                _uri = uri.ToString( true );
+                _uri = uri.ToString(true);
                 _userName = uri.UserName;
                 _password = uri.Password;
             }
@@ -77,22 +77,22 @@ namespace RabbitOM.Net.Rtsp.Tests.ConsoleApp
 
         public bool CanShowHelp()
         {
-			return ! _args.Any() || string.IsNullOrWhiteSpace( _uri );
+            return (_args.Length == 0) || string.IsNullOrWhiteSpace(_uri);
         }
 
-        public void ShowHelp()
+        public static void ShowHelp()
         {
             string processName = Assembly.GetExecutingAssembly().GetName().Name + ".exe";
 
             Console.WriteLine();
-            Console.WriteLine( "Receiving packet from a rtsp source " );
+            Console.WriteLine("Receiving packet from a rtsp source ");
             Console.WriteLine();
-            Console.WriteLine( "Usage: " );
+            Console.WriteLine("Usage: ");
             Console.WriteLine();
-            Console.WriteLine( $"{processName} rtsp://127.0.0.1/toy.mp4" );
-            Console.WriteLine( $"{processName} rtsp://admin:camera123@127.0.0.1/toy.mp4" );
-            Console.WriteLine( $"{processName} rtsp://127.0.0.1:554/toy.mp4" );
-            Console.WriteLine( $"{processName} rtsp://admin:camera123@127.0.0.1:554/toy.mp4" );
+            Console.WriteLine($"{processName} rtsp://127.0.0.1/toy.mp4");
+            Console.WriteLine($"{processName} rtsp://admin:camera123@127.0.0.1/toy.mp4");
+            Console.WriteLine($"{processName} rtsp://127.0.0.1:554/toy.mp4");
+            Console.WriteLine($"{processName} rtsp://admin:camera123@127.0.0.1:554/toy.mp4");
             Console.WriteLine();
         }
     }

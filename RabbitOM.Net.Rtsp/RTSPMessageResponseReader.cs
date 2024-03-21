@@ -20,9 +20,9 @@ namespace RabbitOM.Net.Rtsp
 
         private string                              _body           = string.Empty;
 
-        private readonly IDictionary<string,string> _headers        = null;
+        private readonly IDictionary<string,string>? _headers        = null;
 
-        private readonly RTSPStringReader           _reader         = null;
+        private readonly RTSPStringReader? _reader         = null;
 
 
 

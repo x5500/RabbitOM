@@ -14,13 +14,13 @@ namespace RabbitOM.Net.Rtsp
 
 
 
-        private readonly Action<Exception>  _errorHandler = null;
+        private readonly Action<Exception>? _errorHandler = null;
 
-        private Socket                      _socket       = null;
+        private Socket? _socket       = null;
 
-        private IPEndPoint                  _groupEP      = null;   
+        private IPEndPoint? _groupEP      = null;   
         
-        private byte[]                      _buffer       = null;
+        private byte[]? _buffer       = null;
 
 
 

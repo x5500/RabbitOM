@@ -348,7 +348,7 @@ namespace RabbitOM.Net.Rtsp
         /// Add a header
         /// </summary>
         /// <param name="header">the header</param>
-        public bool CanAddHeader( RTSPHeader header )
+        public static bool CanAddHeader( RTSPHeader header )
         {
             return header == null
                 || header is RTSPHeaderNull
@@ -374,7 +374,7 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="name">the header name</param>
         /// <param name="value">the header value</param>
-        public bool CanAddHeader( string name , string value )
+        public static bool CanAddHeader( string name , string value )
         {
             return !string.IsNullOrWhiteSpace( name ) && !string.IsNullOrWhiteSpace( value );
         }

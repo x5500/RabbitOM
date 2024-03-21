@@ -7,11 +7,11 @@ namespace RabbitOM.Net.Rtsp.Remoting
     /// </summary>
     internal sealed class RTSPProxySecurityManager
     {
-        private readonly object                    _lock     = null;
+        private readonly object? _lock     = null;
 
-        private readonly RTSPProxy                 _proxy    = null;
+        private readonly RTSPProxy? _proxy    = null;
 
-        private readonly RTSPAuthorizationFactory  _factory  = null;
+        private readonly RTSPAuthorizationFactory? _factory  = null;
 
 
 

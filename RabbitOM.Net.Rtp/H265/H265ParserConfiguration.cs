@@ -5,9 +5,9 @@ namespace RabbitOM.Net.Rtp.H265
 {
     public sealed class H265ParserConfiguration
     {
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
 
-        private readonly HashSet<int> _supportedPayloads = new HashSet<int>();
+        private readonly HashSet<int> _supportedPayloads = new();
 
         public bool IsPayloadSupported( int value )
         {

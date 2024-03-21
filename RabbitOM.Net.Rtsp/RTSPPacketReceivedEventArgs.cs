@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     public class RTSPPacketReceivedEventArgs : EventArgs
     {
-        private readonly RTSPPacket _packet = null;
+        private readonly RTSPPacket? _packet = null;
 
 
         /// <summary>

@@ -4,7 +4,7 @@ namespace RabbitOM.Net.Rtp.H264
 {
     public sealed class H264Parser
     {
-        private readonly H264ParserConfiguration _configuration = new H264ParserConfiguration();
+        private readonly H264ParserConfiguration _configuration = new();
 
         public H264ParserConfiguration Configuration
         {
@@ -26,7 +26,7 @@ namespace RabbitOM.Net.Rtp.H264
                 return false;
             }
 
-            H264NalUnitCollection nalunits = new H264NalUnitCollection();
+            H264NalUnitCollection nalunits = new();
 
             foreach ( var packet in frame.Packets )
             {

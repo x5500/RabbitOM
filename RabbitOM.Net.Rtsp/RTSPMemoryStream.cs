@@ -13,11 +13,11 @@ namespace RabbitOM.Net.Rtsp
     {
         private const int              DefaultSize =  8096 * 8 * 2;
 
-        private MemoryStream           _stream     = null;
+        private MemoryStream? _stream     = null;
 
-        private byte[]                 _buffer     = null;
+        private byte[]? _buffer     = null;
 
-        private readonly StringBuilder _builder    = null;
+        private readonly StringBuilder? _builder    = null;
 
 
 
@@ -1102,7 +1102,7 @@ namespace RabbitOM.Net.Rtsp
         /// Occurs when an exception has been dected
         /// </summary>
         /// <param name="exception">the exception</param>
-        private void OnError( Exception exception )
+        private static void OnError( Exception exception )
         {
             if ( exception == null )
             {

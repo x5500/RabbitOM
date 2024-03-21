@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     internal sealed class RTSPBasicAuthorizationChallenge : RTSPAuthorizationChallenge
     {
-        private readonly RTSPCredentials _credentials = null;
+        private readonly RTSPCredentials? _credentials = null;
 
         /// <summary>
         /// Constructor

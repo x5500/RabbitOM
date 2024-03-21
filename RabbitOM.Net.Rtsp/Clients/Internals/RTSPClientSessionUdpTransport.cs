@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp.Clients
     /// </summary>
     internal sealed class RTSPClientSessionUdpTransport : RTSPClientSessionTransport
     {
-        private readonly RTSPUdpSocket         _socket    = null;
+        private readonly RTSPUdpSocket? _socket    = null;
 
         private readonly int                   _port      = 0;
 

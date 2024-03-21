@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp.Clients
     /// </summary>
     public class RTSPClientConnectedEventArgs : EventArgs
     {
-        private readonly RTSPTrackInfo _trackInfo = null;
+        private readonly RTSPTrackInfo? _trackInfo = null;
 
         /// <summary>
         /// Constructor

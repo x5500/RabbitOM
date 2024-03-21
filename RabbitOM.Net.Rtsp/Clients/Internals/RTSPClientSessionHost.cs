@@ -9,7 +9,7 @@ namespace RabbitOM.Net.Rtsp.Clients
     {
         private TimeSpan                    _idleTimeout    = TimeSpan.Zero;
 
-        private readonly RTSPClientSession  _session        = null;
+        private readonly RTSPClientSession? _session        = null;
 
 
 

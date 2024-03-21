@@ -126,13 +126,12 @@ namespace RabbitOM.Net.Sdp
         /// <returns>returns a string</returns>
         public static string ConvertToString(AddressType value)
         {
-            switch (value)
+            return value switch
             {
-                case AddressType.IPV4: return "IP4";
-                case AddressType.IPV6: return "IP6";
-            }
-
-            return "NONE";
+                AddressType.IPV4 => "IP4",
+                AddressType.IPV6 => "IP6",
+                _ => "NONE",
+            };
         }
 
         /// <summary>
@@ -142,16 +141,15 @@ namespace RabbitOM.Net.Sdp
         /// <returns>returns a string</returns>
         public static string ConvertToString(MediaType value)
         {
-            switch (value)
+            return value switch
             {
-                case MediaType.Application: return "application";
-                case MediaType.Audio: return "audio";
-                case MediaType.Text: return "text";
-                case MediaType.Video: return "video";
-                case MediaType.Message: return "message";
-            }
-
-            return "NONE";
+                MediaType.Application => "application",
+                MediaType.Audio => "audio",
+                MediaType.Text => "text",
+                MediaType.Video => "video",
+                MediaType.Message => "message",
+                _ => "NONE",
+            };
         }
 
         /// <summary>
@@ -171,13 +169,12 @@ namespace RabbitOM.Net.Sdp
         /// <returns>returns a string</returns>
         public static string ConvertToString(ProfileType value)
         {
-            switch (value)
+            return value switch
             {
-                case ProfileType.AVP: return "AVP";
-                case ProfileType.SAVP: return "SAVP";
-            }
-
-            return "NONE";
+                ProfileType.AVP => "AVP",
+                ProfileType.SAVP => "SAVP",
+                _ => "NONE",
+            };
         }
 
         /// <summary>
@@ -356,6 +353,8 @@ namespace RabbitOM.Net.Sdp
             return ProtocolType.None;
         }
 
+        internal static readonly char[] separator = ['/'];
+
         /// <summary>
         /// Convert to a byte value
         /// </summary>
@@ -368,7 +367,7 @@ namespace RabbitOM.Net.Sdp
                 return byte.MinValue;
             }
 
-            var tokens = value.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            var tokens = value.Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
             if (tokens.Length < 2)
             {
@@ -383,7 +382,7 @@ namespace RabbitOM.Net.Sdp
         /// </summary>
         /// <param name="value">the value</param>
         /// <returns>returns a trimed value</returns>
-        public static string Filter(string value)
+        public static string Filter(string? value)
         {
             return Filter(value, true);
         }
@@ -394,7 +393,7 @@ namespace RabbitOM.Net.Sdp
         /// <param name="value">the value</param>
         /// <param name="ignoreQuotes">set true to ignore quotes</param>
         /// <returns>returns a trimed value</returns>
-        public static string Filter(string value, bool ignoreQuotes)
+        public static string Filter(string? value, bool ignoreQuotes)
         {
             if (string.IsNullOrWhiteSpace(value))
             {
@@ -504,7 +503,7 @@ namespace RabbitOM.Net.Sdp
 
             var tokens = value.Split( new char[] { splitCharacter } , StringSplitOptions.RemoveEmptyEntries ).Select( token => token.Trim() );
 
-            if ( tokens.Count() <= 0 )
+            if (!tokens.Any())
             {
                 return value;
             }

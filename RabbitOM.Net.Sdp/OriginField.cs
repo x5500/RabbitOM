@@ -18,17 +18,17 @@ namespace RabbitOM.Net.Sdp
 
 
 
-        private string      _userName    = string.Empty;
+        private string _userName = string.Empty;
 
-        private ulong       _sessionId   = 0;
+        private ulong _sessionId = 0;
 
-        private ulong       _version     = 0;
+        private ulong _version = 0;
 
         private NetworkType _networkType = NetworkType.None;
 
         private AddressType _addressType = AddressType.None;
 
-        private string      _address     = string.Empty;
+        private string _address = string.Empty;
 
 
 
@@ -48,7 +48,7 @@ namespace RabbitOM.Net.Sdp
         /// <remarks>
         ///     <para>the user name must not contains spaces</para>
         /// </remarks>
-        public string UserName
+        public string? UserName
         {
             get => _userName;
             set => _userName = DataConverter.Filter(value);
@@ -109,23 +109,23 @@ namespace RabbitOM.Net.Sdp
         public override bool TryValidate()
         {
             // the user name must not contains space https://datatracker.ietf.org/doc/html/rfc4566.html#page-11
-            
-            if ( _userName?.Contains( " " ) == true) 
+
+            if (_userName?.Contains(' ') == true)
             {
                 return false;
             }
 
-            if ( _networkType == NetworkType.None )
+            if (_networkType == NetworkType.None)
             {
                 return false;
             }
 
-            if ( _addressType == AddressType.None )
+            if (_addressType == AddressType.None)
             {
                 return false;
             }
 
-            return ValidatorHelper.TryValidateAddress( _address , _addressType );
+            return ValidatorHelper.TryValidateAddress(_address, _addressType);
         }
 
         /// <summary>
@@ -134,17 +134,17 @@ namespace RabbitOM.Net.Sdp
         /// <param name="field">the field</param>
         public void CopyFrom(OriginField field)
         {
-            if ( field == null )
+            if (field == null)
             {
                 return;
             }
 
-            _userName    = field._userName;
-            _sessionId   = field._sessionId;
-            _version     = field._version;
+            _userName = field._userName;
+            _sessionId = field._sessionId;
+            _version = field._version;
             _networkType = field._networkType;
             _addressType = field._addressType;
-            _address     = field._address;
+            _address = field._address;
         }
 
         /// <summary>
@@ -153,13 +153,8 @@ namespace RabbitOM.Net.Sdp
         /// <returns>retuns a value</returns>
         public override string ToString()
         {
-            return OriginFieldFormatter.Format( this);
+            return OriginFieldFormatter.Format(this);
         }
-
-
-
-
-
         /// <summary>
         /// Parse
         /// </summary>
@@ -170,16 +165,7 @@ namespace RabbitOM.Net.Sdp
         /// <exception cref="FormatException"/>
         public static OriginField Parse(string value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new ArgumentException(nameof(value));
-            }
-
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(value, nameof(value));
             return OriginFieldFormatter.TryParse(value, out OriginField result) ? result : throw new FormatException();
         }
 

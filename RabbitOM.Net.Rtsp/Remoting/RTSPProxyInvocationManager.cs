@@ -13,7 +13,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
     /// </remarks>
     internal sealed class RTSPProxyInvocationManager
     {
-        private readonly RTSPProxy _proxy = null;
+        private readonly RTSPProxy? _proxy = null;
 
 
 

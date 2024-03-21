@@ -17,11 +17,11 @@ namespace RabbitOM.Net.Rtsp
 
         private bool                         _includeQuotes           = false;
 
-        private readonly ISet<string>        _elements                = null;
+        private readonly ISet<string>? _elements                = null;
 
-        private readonly ISet<string>        _sequences               = null;
+        private readonly ISet<string>? _sequences               = null;
 
-        private readonly IEnumerator<string> _enumerator              = null;
+        private readonly IEnumerator<string>? _enumerator              = null;
 
 
 
@@ -520,7 +520,7 @@ namespace RabbitOM.Net.Rtsp
                 return false;
             }
 
-            var tokens = _currentElement.Split( new char[] { (char) _operator } );
+            var tokens = _currentElement.Split( [(char) _operator] );
 
             if ( tokens == null || tokens.Length <= 0 )
             {

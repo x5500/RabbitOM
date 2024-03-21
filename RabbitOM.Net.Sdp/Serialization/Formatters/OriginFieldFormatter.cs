@@ -35,6 +35,8 @@ namespace RabbitOM.Net.Sdp.Serialization.Formatters
             return builder.ToString();
         }
 
+        private static readonly char[] separator = [' '];
+
         /// <summary>
         /// Try to parse
         /// </summary>
@@ -50,9 +52,9 @@ namespace RabbitOM.Net.Sdp.Serialization.Formatters
                 return false;
             }
 
-            var tokens = DataConverter.ReArrange( value , '/' ).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var tokens = DataConverter.ReArrange( value , '/' ).Split(separator, StringSplitOptions.RemoveEmptyEntries);
 
-            if ( ! tokens.Any() )
+            if ( tokens.Length == 0)
             {
                 return false;
             }

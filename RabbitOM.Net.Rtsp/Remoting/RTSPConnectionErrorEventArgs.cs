@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
     /// </summary>
     public class RTSPConnectionErrorEventArgs : EventArgs
     {
-        private readonly Exception _exception = null;
+        private readonly Exception? _exception = null;
 
         /// <summary>
         /// Constructor

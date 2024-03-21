@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     public sealed class RTSPHeaderPublic : RTSPHeader
     {
-        private readonly RTSPMethodList _methods = null;
+        private readonly RTSPMethodList? _methods = null;
 
 
 
@@ -86,7 +86,7 @@ namespace RabbitOM.Net.Rtsp
         /// <param name="value">the header value</param>
         /// <param name="result">the output result</param>
         /// <returns>returns true for a success, otherwise false.</returns>
-        public static bool TryParse( string value , out RTSPHeaderPublic result )
+        public static bool TryParse( string value , out RTSPHeaderPublic? result )
         {
             result = null;
 

@@ -6,7 +6,7 @@ namespace RabbitOM.Net.Rtp
     {
         /// TODO: use the DIP and replace with an interface
         
-        private readonly DefaultRTPFrameBuilder _builder = new DefaultRTPFrameBuilder();
+        private readonly DefaultRTPFrameBuilder _builder = new();
 
         public override void Write( byte[] data )
         {

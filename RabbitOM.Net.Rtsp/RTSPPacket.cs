@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     public class RTSPPacket
     {
-        private readonly byte[] _data = null;
+        private readonly byte[]? _data = null;
 
 
 

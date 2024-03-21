@@ -10,32 +10,32 @@ namespace RabbitOM.Net.Rtsp.Clients
         /// <summary>
         /// Raised when the communication has been started
         /// </summary>
-        public event EventHandler<RTSPClientCommunicationStartedEventArgs> CommunicationStarted  = null;
+        public event EventHandler<RTSPClientCommunicationStartedEventArgs>? CommunicationStarted  = null;
 
         /// <summary>
         /// Raised when the communication has been stopped
         /// </summary>
-        public event EventHandler<RTSPClientCommunicationStoppedEventArgs> CommunicationStopped  = null;
+        public event EventHandler<RTSPClientCommunicationStoppedEventArgs>? CommunicationStopped  = null;
 
         /// <summary>
         /// Raised when the client is connected
         /// </summary>
-        public event EventHandler<RTSPClientConnectedEventArgs>            Connected             = null;
+        public event EventHandler<RTSPClientConnectedEventArgs>?            Connected             = null;
 
         /// <summary>
         /// Raised when the client is disconnected
         /// </summary>
-        public event EventHandler<RTSPClientDisconnectedEventArgs>         Disconnected          = null;
+        public event EventHandler<RTSPClientDisconnectedEventArgs>?         Disconnected          = null;
 
         /// <summary>
         /// Raise when an data has been received
         /// </summary>
-        public event EventHandler<RTSPPacketReceivedEventArgs>             PacketReceived        = null;
+        public event EventHandler<RTSPPacketReceivedEventArgs>?             PacketReceived        = null;
 
         /// <summary>
         /// Raise when an error occurs
         /// </summary>
-        public event EventHandler<RTSPClientErrorEventArgs>                Error                 = null;
+        public event EventHandler<RTSPClientErrorEventArgs>?                Error                 = null;
 
 
         

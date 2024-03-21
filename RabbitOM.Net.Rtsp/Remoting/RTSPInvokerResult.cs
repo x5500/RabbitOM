@@ -9,9 +9,9 @@ namespace RabbitOM.Net.Rtsp.Remoting
     {
         private readonly bool                      _succeed   = false;
 
-        private readonly RTSPInvokerResultResponse _response  = null;
+        private readonly RTSPInvokerResultResponse? _response  = null;
 
-        private readonly RTSPInvokerResultRequest  _request   = null;
+        private readonly RTSPInvokerResultRequest? _request   = null;
 
 
         /// <summary>

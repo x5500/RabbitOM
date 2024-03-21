@@ -7,9 +7,9 @@ namespace RabbitOM.Net.Rtsp.Clients
     /// </summary>
     internal abstract class RTSPClientSessionTransport
     {
-        private readonly RTSPThread        _thread      = null;
+        private readonly RTSPThread? _thread      = null;
 
-        private RTSPClientSession          _session     = null;
+        private RTSPClientSession? _session     = null;
 
         private int                        _idleTimeout = 0;
         

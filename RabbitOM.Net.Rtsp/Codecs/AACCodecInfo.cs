@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp.Codecs
     /// </summary>
     public sealed class AACCodecInfo : AudioCodecInfo
     {
-        private readonly byte[] _data           = null;
+        private readonly byte[]? _data           = null;
 
         private readonly int    _size           = 0;
 
@@ -26,7 +26,7 @@ namespace RabbitOM.Net.Rtsp.Codecs
         /// <param name="index">the index</param>
         public AACCodecInfo( byte[] data , int size , int index )
         {
-            _data  = data ?? new byte[ 0 ];
+            _data  = data ?? [];
             _size  = size;
             _indexLength = index;
             _deltaLength = 0;

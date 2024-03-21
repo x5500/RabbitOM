@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     internal sealed class RTSPAuthorizationFactory
     {
-        private RTSPHeaderWWWAuthenticate _header = null;
+        private RTSPHeaderWWWAuthenticate? _header = null;
 
         /// <summary>
         /// Initialize

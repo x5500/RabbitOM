@@ -199,7 +199,7 @@ namespace RabbitOM.Net.Rtsp
         /// <param name="value">the header value</param>
         /// <param name="result">the output result</param>
         /// <returns>returns true for a success, otherwise false.</returns>
-        public static bool TryParse( string value , out RTSPHeaderAuthorization result )
+        public static bool TryParse( string value , out RTSPHeaderAuthorization? result )
         {
             result = null;
 
@@ -239,7 +239,7 @@ namespace RabbitOM.Net.Rtsp
         /// <param name="value">the input value</param>
         /// <param name="result">the output result</param>
         /// <returns>returns true for a success, otherwise false.</returns>
-        private static bool TryParseAsBasic( string value , out RTSPHeaderAuthorization result )
+        private static bool TryParseAsBasic( string value , out RTSPHeaderAuthorization? result )
         {
             result = null;
 
@@ -263,7 +263,7 @@ namespace RabbitOM.Net.Rtsp
         /// <param name="headers">the collection of headers</param>
         /// <param name="result">the output result</param>
         /// <returns>returns true for a success, otherwise false.</returns>
-        private static bool TryParseAsDigest( IEnumerable<string> headers , out RTSPHeaderAuthorization result )
+        private static bool TryParseAsDigest( IEnumerable<string> headers , out RTSPHeaderAuthorization? result )
         {
             result = null;
 

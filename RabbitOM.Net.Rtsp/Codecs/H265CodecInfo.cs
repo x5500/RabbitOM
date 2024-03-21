@@ -44,8 +44,8 @@ namespace RabbitOM.Net.Rtsp.Codecs
         /// <param name="vps">the video parameter set</param>
         public H265CodecInfo(byte[] sps_pps, byte[] vps)
         {
-            _sps_pps = (sps_pps ?? new byte[0]);
-            _vps = (vps ?? new byte[0]);
+            _sps_pps = (sps_pps ?? []);
+            _vps = (vps ?? []);
         }
 
         /// <summary>

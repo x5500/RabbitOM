@@ -8,7 +8,7 @@ namespace RabbitOM.Net.Rtsp.Codecs
     /// </summary>
     public sealed class H264CodecInfo : VideoCodecInfo
     {
-        private readonly byte[] _sps_pps = null;
+        private readonly byte[]? _sps_pps = null;
 
        
 
@@ -20,7 +20,7 @@ namespace RabbitOM.Net.Rtsp.Codecs
         /// <param name="sps_pps">the sequence parameter set</param>
         public H264CodecInfo( byte[] sps_pps )
         {
-            _sps_pps = sps_pps ?? new byte[ 0 ];
+            _sps_pps = sps_pps ?? [];
         }
         
 

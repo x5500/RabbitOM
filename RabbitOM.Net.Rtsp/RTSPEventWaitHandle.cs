@@ -8,7 +8,7 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     internal sealed class RTSPEventWaitHandle : IDisposable
     {
-        private readonly EventWaitHandle _handle = null;
+        private readonly EventWaitHandle? _handle = null;
 
 
 
@@ -224,7 +224,7 @@ namespace RabbitOM.Net.Rtsp
         /// Fired when an exception occurs
         /// </summary>
         /// <param name="ex">the exception</param>
-        private void OnException( Exception ex )
+        private static void OnException( Exception ex )
         {
             if ( ex == null )
             {

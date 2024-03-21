@@ -7,19 +7,19 @@ namespace RabbitOM.Net.Rtsp.Remoting
     /// </summary>
     internal sealed class RTSPProxyRequestManager : IDisposable
     {
-        private readonly RTSPProxy                    _proxy                 = null;
+        private readonly RTSPProxy? _proxy                 = null;
 
-        private readonly RTSPChunkQueue               _chunks                = null;
+        private readonly RTSPChunkQueue? _chunks                = null;
 
-        private readonly RTSPMessageExtactor           _extractor               = null;
+        private readonly RTSPMessageExtactor? _extractor               = null;
 
-        private readonly RTSPThread                   _chunkListenerThread   = null;
+        private readonly RTSPThread? _chunkListenerThread   = null;
 
-        private readonly RTSPThread                   _requestListenerThread = null;
+        private readonly RTSPThread? _requestListenerThread = null;
 
-        private readonly RTSPProxyRequestHandlerList  _requestHandlers       = null;
+        private readonly RTSPProxyRequestHandlerList? _requestHandlers       = null;
 
-        private byte[]                                _buffer                = null;
+        private byte[]? _buffer                = null;
 
 
 
@@ -102,7 +102,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// <remarks>
         /// <para>This method try to send a request and wait a response using message correlation pattern</para>
         /// </remarks>
-        public bool TrySendRequest( RTSPMessageRequest request , out RTSPMessageResponse response )
+        public bool TrySendRequest( RTSPMessageRequest request , out RTSPMessageResponse? response )
         {
             response = null;
 

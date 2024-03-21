@@ -8,17 +8,13 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     internal sealed class RTSPHeaderWriter
     {
-        private RTSPSeparator            _separator      = RTSPSeparator.Comma;
+        private RTSPSeparator _separator = RTSPSeparator.Comma;
 
-        private RTSPOperator             _operator       = RTSPOperator.Equality;
+        private RTSPOperator _operator = RTSPOperator.Equality;
 
-        private bool                     _includeQuotes  = false;
+        private bool _includeQuotes = false;
 
-        private readonly StringBuilder   _builder        = new StringBuilder();
-
-
-
-
+        private readonly StringBuilder _builder = new();
 
         /// <summary>
         /// Constructor
@@ -31,7 +27,7 @@ namespace RabbitOM.Net.Rtsp
         /// Constructor
         /// </summary>
         /// <param name="separator">the separator</param>
-        public RTSPHeaderWriter( RTSPSeparator separator )
+        public RTSPHeaderWriter(RTSPSeparator separator)
         {
             Separator = separator;
         }
@@ -41,7 +37,7 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="separator">the separator</param>
         /// <param name="operator">the operator</param>
-        public RTSPHeaderWriter( RTSPSeparator separator , RTSPOperator @operator )
+        public RTSPHeaderWriter(RTSPSeparator separator, RTSPOperator @operator)
         {
             Separator = separator;
             Operator = @operator;
@@ -111,9 +107,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="value">the value</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public bool CanWrite( string value )
+        public static bool CanWrite(string value)
         {
-            return !string.IsNullOrWhiteSpace( value );
+            return !string.IsNullOrWhiteSpace(value);
         }
 
         /// <summary>
@@ -122,10 +118,10 @@ namespace RabbitOM.Net.Rtsp
         /// <param name="parameterName">the parameter name</param>
         /// <param name="parameterValue">the parameter value</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public bool CanWrite( string parameterName , string parameterValue )
+        public static bool CanWrite(string parameterName, string parameterValue)
         {
-            return !string.IsNullOrWhiteSpace( parameterName )
-                && !string.IsNullOrWhiteSpace( parameterValue );
+            return !string.IsNullOrWhiteSpace(parameterName)
+                && !string.IsNullOrWhiteSpace(parameterValue);
         }
 
         /// <summary>
@@ -133,16 +129,16 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         public void WriteSeparator()
         {
-            WriteSeparator( _separator );
+            WriteSeparator(_separator);
         }
 
         /// <summary>
         /// Write a separator
         /// </summary>
         /// <param name="separator">the separator</param>
-        public void WriteSeparator( RTSPSeparator separator )
+        public void WriteSeparator(RTSPSeparator separator)
         {
-            Write( (char) separator );
+            Write((char)separator);
         }
 
         /// <summary>
@@ -150,7 +146,7 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         public void WriteOperator()
         {
-            WriteOperator( _operator );
+            WriteOperator(_operator);
         }
 
         /// <summary>
@@ -158,9 +154,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="operator">the operator</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public void WriteOperator( RTSPOperator @operator )
+        public void WriteOperator(RTSPOperator @operator)
         {
-            Write( (char) @operator );
+            Write((char)@operator);
         }
 
         /// <summary>
@@ -168,151 +164,151 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         public void WriteSpace()
         {
-            Write( " " );
+            Write(" ");
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( bool value )
+        public void Write(bool value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( char value )
+        public void Write(char value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( sbyte value )
+        public void Write(sbyte value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( byte value )
+        public void Write(byte value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( short value )
+        public void Write(short value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( ushort value )
+        public void Write(ushort value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( int value )
+        public void Write(int value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( uint value )
+        public void Write(uint value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( long value )
+        public void Write(long value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( ulong value )
+        public void Write(ulong value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( decimal value )
+        public void Write(decimal value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( float value )
+        public void Write(float value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( double value )
+        public void Write(double value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( DateTime value )
+        public void Write(DateTime value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( TimeSpan value )
+        public void Write(TimeSpan value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( Guid value )
+        public void Write(Guid value)
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
@@ -320,27 +316,27 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <typeparam name="TEnum">the type of enum</typeparam>
         /// <param name="value">the value</param>
-        public void Write<TEnum>( TEnum value ) where TEnum : struct
+        public void Write<TEnum>(TEnum value) where TEnum : struct
         {
-            Write( value.ToString() );
+            Write(value.ToString());
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void Write( string value )
+        public void Write(string? value)
         {
-            InternalWrite( value );
+            InternalWrite(value);
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        public void WriteAsBase64( string value )
+        public void WriteAsBase64(string value)
         {
-            InternalWriteAsBase64( value );
+            InternalWriteAsBase64(value);
         }
 
         /// <summary>
@@ -348,9 +344,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , bool fieldValue )
+        public void WriteField(string fieldName, bool fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -358,9 +354,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , char fieldValue )
+        public void WriteField(string fieldName, char fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -368,9 +364,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , sbyte fieldValue )
+        public void WriteField(string fieldName, sbyte fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -378,9 +374,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , byte fieldValue )
+        public void WriteField(string fieldName, byte fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -388,9 +384,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , short fieldValue )
+        public void WriteField(string fieldName, short fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -398,9 +394,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , ushort fieldValue )
+        public void WriteField(string fieldName, ushort fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -408,9 +404,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , int fieldValue )
+        public void WriteField(string fieldName, int fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -418,9 +414,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , uint fieldValue )
+        public void WriteField(string fieldName, uint fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -428,9 +424,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , long fieldValue )
+        public void WriteField(string fieldName, long fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -438,9 +434,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , ulong fieldValue )
+        public void WriteField(string fieldName, ulong fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -448,9 +444,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , decimal fieldValue )
+        public void WriteField(string fieldName, decimal fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -458,9 +454,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , float fieldValue )
+        public void WriteField(string fieldName, float fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -468,9 +464,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , double fieldValue )
+        public void WriteField(string fieldName, double fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -478,9 +474,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , DateTime fieldValue )
+        public void WriteField(string fieldName, DateTime fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -488,9 +484,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , TimeSpan fieldValue )
+        public void WriteField(string fieldName, TimeSpan fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -498,9 +494,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , Guid fieldValue )
+        public void WriteField(string fieldName, Guid fieldValue)
         {
-            WriteField( fieldName , fieldValue.ToString() );
+            WriteField(fieldName, fieldValue.ToString());
         }
 
         /// <summary>
@@ -508,9 +504,9 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteField( string fieldName , string fieldValue )
+        public void WriteField(string fieldName, string fieldValue)
         {
-            InternalWrite( InternalCreate( fieldName , fieldValue ) );
+            InternalWrite(InternalCreate(fieldName, fieldValue));
         }
 
         /// <summary>
@@ -518,27 +514,27 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="fieldName">the parameter name</param>
         /// <param name="fieldValue">the parameter value </param>
-        public void WriteFieldAsBase64( string fieldName , string fieldValue )
+        public void WriteFieldAsBase64(string fieldName, string fieldValue)
         {
-            InternalWriteAsBase64( InternalCreate( fieldName , fieldValue ) );
+            InternalWriteAsBase64(InternalCreate(fieldName, fieldValue));
         }
 
         /// <summary>
         /// Write
         /// </summary>
         /// <param name="value">the value</param>
-        private void InternalWrite( string value )
+        private void InternalWrite(string? value)
         {
-            _builder.Append( value ?? string.Empty );
+            _builder.Append(value ?? string.Empty);
         }
 
         /// <summary>
         /// Write an element
         /// </summary>
         /// <param name="value">the value</param>
-        private void InternalWriteAsBase64( string value )
+        private void InternalWriteAsBase64(string value)
         {
-            _builder.Append( RTSPDataConverter.ConvertToBase64( value ) );
+            _builder.Append(RTSPDataConverter.ConvertToBase64(value));
         }
 
         /// <summary>
@@ -546,23 +542,23 @@ namespace RabbitOM.Net.Rtsp
         /// </summary>
         /// <param name="parameterName">the parameter name</param>
         /// <param name="parameterValue">the parameter value </param>
-        private string InternalCreate( string parameterName , string parameterValue )
+        private string InternalCreate(string parameterName, string parameterValue)
         {
             var builder = new StringBuilder();
 
-            builder.Append( parameterName ?? string.Empty );
-            builder.Append( (char) _operator );
+            builder.Append(parameterName ?? string.Empty);
+            builder.Append((char)_operator);
 
-            if ( _includeQuotes )
+            if (_includeQuotes)
             {
-                builder.Append( "\"" );
+                builder.Append('"');
             }
 
-            builder.Append( parameterValue ?? string.Empty );
+            builder.Append(parameterValue ?? string.Empty);
 
-            if ( _includeQuotes )
+            if (_includeQuotes)
             {
-                builder.Append( "\"" );
+                builder.Append('"');
             }
 
             return builder.ToString();

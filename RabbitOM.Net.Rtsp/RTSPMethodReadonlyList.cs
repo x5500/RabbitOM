@@ -13,7 +13,7 @@ namespace RabbitOM.Net.Rtsp
         , IEnumerable<RTSPMethod>
         , IReadOnlyCollection<RTSPMethod>
     {
-        private readonly RTSPMethodList _collection = null;
+        private readonly RTSPMethodList? _collection = null;
 
 
 

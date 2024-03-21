@@ -41,6 +41,9 @@ namespace RabbitOM.Net.Sdp.Serialization.Formatters
             return builder.ToString();
         }
 
+        private static readonly char[] separator_space = [' '];
+        private static readonly char[] separator_slash = ['/'];
+
         /// <summary>
         /// Try to parse
         /// </summary>
@@ -56,26 +59,26 @@ namespace RabbitOM.Net.Sdp.Serialization.Formatters
                 return false;
             }
 
-            var tokens = DataConverter.ReArrange( value , '/' ).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var tokens = DataConverter.ReArrange(value, '/').Split(separator_space, StringSplitOptions.RemoveEmptyEntries);
 
-            if ( tokens.Length <= 1  )
+            if (tokens.Length <= 1)
             {
                 return false;
             }
 
             result = new RtpMapAttributeValue()
             {
-                PayloadType = DataConverter.ConvertToByte( tokens.FirstOrDefault() )
+                PayloadType = DataConverter.ConvertToByte(tokens.FirstOrDefault())
             };
 
-            if ( ! string.IsNullOrWhiteSpace( tokens.ElementAtOrDefault( 1 ) ) )
+            if (!string.IsNullOrWhiteSpace(tokens.ElementAtOrDefault(1)))
             {
-                var encodingTokens = tokens.ElementAtOrDefault( 1 ).Split( new char[] { '/' } , StringSplitOptions.RemoveEmptyEntries );
+                var encodingTokens = tokens.ElementAtOrDefault(1)?.Split(separator_slash, StringSplitOptions.RemoveEmptyEntries);
 
-                if ( encodingTokens.Length > 0 )
+                if ((encodingTokens != null) && (encodingTokens.Length > 0))
                 {
-                    result.Encoding  = encodingTokens.ElementAtOrDefault( 0 );
-                    result.ClockRate = DataConverter.ConvertToUInt( encodingTokens.ElementAtOrDefault( 1 ) );
+                    result.Encoding = encodingTokens.ElementAtOrDefault(0);
+                    result.ClockRate = DataConverter.ConvertToUInt(encodingTokens.ElementAtOrDefault(1));
                 }
             }
 

@@ -13,7 +13,7 @@ namespace RabbitOM.Net.Rtsp.Clients
     {
         private readonly object     _lock                = new object();
 
-        private SessionDescriptor   _sdp                 = null; 
+        private SessionDescriptor? _sdp                 = null; 
 
         private RTSPTrackInfo       _selectedTrack       = RTSPTrackInfo.Empty;
         

@@ -6,9 +6,9 @@ namespace RabbitOM.Net.Rtp
 
     public sealed class StartPrefix
     {
-        public static readonly StartPrefix Null          = new StartPrefix( new byte[0] );
-        public static readonly StartPrefix StartPrefixS3 = new StartPrefix( new byte[] { 0 , 0 , 1 } );
-        public static readonly StartPrefix StartPrefixS4 = new StartPrefix( new byte[] { 0 , 0 , 0 , 1 } );
+        public static readonly StartPrefix Null          = new( [] );
+        public static readonly StartPrefix StartPrefixS3 = new( [0 , 0 , 1] );
+        public static readonly StartPrefix StartPrefixS4 = new( [0 , 0 , 0 , 1] );
 
 
 

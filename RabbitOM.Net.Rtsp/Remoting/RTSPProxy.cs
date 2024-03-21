@@ -10,69 +10,64 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// <summary>
         /// Raised when the connection has been opened
         /// </summary>
-        public event EventHandler<RTSPConnectionOpenedEventArgs>      Opened                = null;
+        public event EventHandler<RTSPConnectionOpenedEventArgs>? Opened = null;
 
         /// <summary>
         /// Raised when the connection has been closed
         /// </summary>
-        public event EventHandler<RTSPConnectionClosedEventArgs>      Closed                = null;
+        public event EventHandler<RTSPConnectionClosedEventArgs>? Closed = null;
 
         /// <summary>
         /// Raised when a message has been sended
         /// </summary>
-        public event EventHandler<RTSPMessageSendedEventArgs>         MessageSended         = null;
+        public event EventHandler<RTSPMessageSendedEventArgs>? MessageSended = null;
 
         /// <summary>
         /// Raised when a message has been received
         /// </summary>
-        public event EventHandler<RTSPMessageReceivedEventArgs>       MessageReceived       = null;
+        public event EventHandler<RTSPMessageReceivedEventArgs>? MessageReceived = null;
 
         /// <summary>
         /// Raised the data has been received
         /// </summary>
-        public event EventHandler<RTSPPacketReceivedEventArgs>        DataReceived          = null;
+        public event EventHandler<RTSPPacketReceivedEventArgs>? DataReceived = null;
 
         /// <summary>
         /// Raised when an error occurs
         /// </summary>
-        public event EventHandler<RTSPConnectionErrorEventArgs>       Error                 = null;
+        public event EventHandler<RTSPConnectionErrorEventArgs>? Error = null;
 
         /// <summary>
         /// Raised when the authentication has failed
         /// </summary>
-        public event EventHandler<RTSPAuthenticationFailedEventArgs>  AuthenticationFailed  = null;
+        public event EventHandler<RTSPAuthenticationFailedEventArgs>? AuthenticationFailed = null;
 
 
+        private readonly object _lock;
 
+        private readonly RTSPTcpSocket _socket;
 
+        private readonly RTSPProxyInformations _informations;
 
+        private readonly RTSPProxyRequestManager _requestManager;
 
+        private readonly RTSPProxySecurityManager _securityManager;
 
-        private readonly object                   _lock                  = null;
+        private readonly RTSPProxyInvocationManager _invokeManager;
 
-        private readonly RTSPTcpSocket            _socket                = null;
+        private readonly RTSPEventQueue _eventQueue;
 
-        private readonly RTSPProxyInformations    _informations          = null;
+        private readonly RTSPEventQueue _mediaEventQueue;
 
-        private readonly RTSPProxyRequestManager  _requestManager        = null;
+        private readonly RTSPThread _eventListener;
 
-        private readonly RTSPProxySecurityManager _securityManager       = null;
+        private readonly RTSPThread _mediaEventListener;
 
-        private readonly RTSPProxyInvocationManager  _invokeManager      = null;
-        
-        private readonly RTSPEventQueue           _eventQueue            = null;
+        private readonly RTSPProxyStatus _status;
 
-        private readonly RTSPEventQueue           _mediaEventQueue       = null;
+        private readonly RTSPProxySettings _settings;
 
-        private readonly RTSPThread               _eventListener         = null;
-
-        private readonly RTSPThread               _mediaEventListener    = null;
-
-        private readonly RTSPProxyStatus          _status                = null;
-
-        private readonly RTSPProxySettings        _settings              = null;
-
-        private bool                              _isDisposed            = false;
+        private bool _isDisposed = false;
 
 
 
@@ -82,15 +77,15 @@ namespace RabbitOM.Net.Rtsp.Remoting
         public RTSPProxy()
         {
             _lock = new object();
-            _socket = new RTSPTcpSocket( e => OnError( new RTSPConnectionErrorEventArgs( e ) ) );
+            _socket = new RTSPTcpSocket(e => OnError(new RTSPConnectionErrorEventArgs(e)));
             _informations = new RTSPProxyInformations();
             _requestManager = new RTSPProxyRequestManager(this);
             _securityManager = new RTSPProxySecurityManager(this);
             _invokeManager = new RTSPProxyInvocationManager(this);
             _eventQueue = new RTSPEventQueue();
             _mediaEventQueue = new RTSPEventQueue();
-            _eventListener = new RTSPThread( "RTSP - Proxy Event listener" );
-            _mediaEventListener = new RTSPThread( "RTSP - Proxy Media event listener" );
+            _eventListener = new RTSPThread("RTSP - Proxy Event listener");
+            _mediaEventListener = new RTSPThread("RTSP - Proxy Media event listener");
             _status = new RTSPProxyStatus();
             _settings = new RTSPProxySettings();
         }
@@ -203,7 +198,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
         {
             get
             {
-                lock ( _lock )
+                lock (_lock)
                 {
                     return _isDisposed;
                 }
@@ -242,20 +237,8 @@ namespace RabbitOM.Net.Rtsp.Remoting
         {
             EnsureNotDispose();
 
-            if (uri == null)
-            {
-                throw new ArgumentNullException(nameof(uri));
-            }
-
-            if (credentials == null)
-            {
-                throw new ArgumentNullException(nameof(credentials));
-            }
-
-            if (string.IsNullOrWhiteSpace(uri))
-            {
-                throw new ArgumentException(nameof(uri));
-            }
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(uri, nameof(uri));
+            ArgumentNullException.ThrowIfNull(credentials, nameof(credentials));
 
             if (TryOpen(uri, credentials))
             {
@@ -268,20 +251,20 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// </summary>
         public void Close()
         {
-            Close( false );
+            Close(false);
         }
 
         /// <summary>
         /// Close
         /// </summary>
         /// <param name="disposing">the disposing status</param>
-        private void Close( bool disposing )
+        private void Close(bool disposing)
         {
             try
             {
                 bool isOpened = false;
 
-                lock ( _lock )
+                lock (_lock)
                 {
                     _isDisposed = disposing;
 
@@ -293,16 +276,16 @@ namespace RabbitOM.Net.Rtsp.Remoting
                     UnInitialize();
                 }
 
-                if ( isOpened )
+                if (isOpened)
                 {
-                    OnClosed( new RTSPConnectionClosedEventArgs() );
+                    OnClosed(new RTSPConnectionClosedEventArgs());
                 }
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 UnInitialize();
 
-                OnError( new RTSPConnectionErrorEventArgs( ex ) );
+                OnError(new RTSPConnectionErrorEventArgs(ex));
             }
         }
 
@@ -320,7 +303,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
 
                 _requestManager.CancelPendingRequests();
 
-                if ( isOpened )
+                if (isOpened)
                 {
                     OnClosed(new RTSPConnectionClosedEventArgs());
                 }
@@ -340,7 +323,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// </summary>
         public void Dispose()
         {
-            Close( true );
+            Close(true);
 
             _requestManager.Dispose();
         }
@@ -350,12 +333,9 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// </summary>
         public void EnsureNotDispose()
         {
-            lock ( _lock )
+            lock (_lock)
             {
-                if ( _isDisposed )
-                {
-                    throw new ObjectDisposedException( "RTSP Proxy" );
-                }
+                ObjectDisposedException.ThrowIf(_isDisposed, this);
             }
         }
 
@@ -380,7 +360,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
         {
             EnsureNotDispose();
 
-            if ( ! TryConfigureTimeouts( receiveTimeout , sendTimeout ) )
+            if (!TryConfigureTimeouts(receiveTimeout, sendTimeout))
             {
                 throw new Exception("Configure timeout failure");
             }
@@ -391,9 +371,9 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// </summary>
         /// <param name="text">the text</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public bool Send( string text )
+        public bool Send(string text)
         {
-            return _socket.Send( text );
+            return _socket.Send(text);
         }
 
         /// <summary>
@@ -401,9 +381,9 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// </summary>
         /// <param name="buffer">the text</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public bool Send( byte[] buffer )
+        public bool Send(byte[] buffer)
         {
-            return _socket.Send( buffer );
+            return _socket.Send(buffer);
         }
 
         /// <summary>
@@ -413,9 +393,9 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// <param name="offset">the offset</param>
         /// <param name="count">the count</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public bool Send( byte[] buffer , int offset , int count )
+        public bool Send(byte[] buffer, int offset, int count)
         {
-            return _socket.Send( buffer , offset , count );
+            return _socket.Send(buffer, offset, count);
         }
 
         /// <summary>
@@ -425,7 +405,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// <param name="offset">the offset</param>
         /// <param name="count">the count</param>
         /// <returns>returns the number of bytes read</returns>
-        public int Receive( byte[] buffer , int offset , int count )
+        public int Receive(byte[] buffer, int offset, int count)
         {
             return _socket.Receive(buffer, offset, count);
         }
@@ -438,76 +418,76 @@ namespace RabbitOM.Net.Rtsp.Remoting
         {
             return _informations.GetNextSequenceIdentifier();
         }
-        
+
         /// <summary>
         /// Wait the connection succeed
         /// </summary>
         /// <param name="timeout">the timeout</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public bool WaitConnectionSucceed( TimeSpan timeout )
+        public bool WaitConnectionSucceed(TimeSpan timeout)
         {
-            return _status.WaitActivation( timeout );
+            return _status.WaitActivation(timeout);
         }
 
         /// <summary>
         /// Dispatch an event
         /// </summary>
         /// <param name="e">the event args</param>
-        public void DispatchEvent( RTSPConnectionOpenedEventArgs e )
+        public void DispatchEvent(RTSPConnectionOpenedEventArgs e)
         {
-            _eventQueue.Enqueue( e );
+            _eventQueue.Enqueue(e);
         }
 
         /// <summary>
         /// Dispatch an event
         /// </summary>
         /// <param name="e">the event args</param>
-        public void DispatchEvent( RTSPConnectionClosedEventArgs e )
+        public void DispatchEvent(RTSPConnectionClosedEventArgs e)
         {
-            _eventQueue.Enqueue( e );
+            _eventQueue.Enqueue(e);
         }
 
         /// <summary>
         /// Dispatch an event
         /// </summary>
         /// <param name="e">the event args</param>
-        public void DispatchEvent( RTSPConnectionErrorEventArgs e )
+        public void DispatchEvent(RTSPConnectionErrorEventArgs e)
         {
-            _eventQueue.Enqueue( e );
+            _eventQueue.Enqueue(e);
         }
 
         /// <summary>
         /// Dispatch an event
         /// </summary>
         /// <param name="e">the event args</param>
-        public void DispatchEvent( RTSPAuthenticationFailedEventArgs e )
+        public void DispatchEvent(RTSPAuthenticationFailedEventArgs e)
         {
-            _eventQueue.Enqueue( e );
+            _eventQueue.Enqueue(e);
         }
 
         /// <summary>
         /// Dispatch an event
         /// </summary>
         /// <param name="e">the event args</param>
-        public void DispatchEvent( RTSPMessageSendedEventArgs e )
+        public void DispatchEvent(RTSPMessageSendedEventArgs e)
         {
-            _eventQueue.Enqueue( e );
+            _eventQueue.Enqueue(e);
         }
 
         /// <summary>
         /// Dispatch an event
         /// </summary>
         /// <param name="e">the event args</param>
-        public void DispatchEvent( RTSPMessageReceivedEventArgs e )
+        public void DispatchEvent(RTSPMessageReceivedEventArgs e)
         {
-            _eventQueue.Enqueue( e );
+            _eventQueue.Enqueue(e);
         }
-        
+
         /// <summary>
         /// Dispatch an event
         /// </summary>
         /// <param name="e">the event args</param>
-        public void DispatchEvent(RTSPPacketReceivedEventArgs e )
+        public void DispatchEvent(RTSPPacketReceivedEventArgs e)
         {
             _mediaEventQueue.Enqueue(e);
         }
@@ -518,9 +498,9 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// </summary>
         /// <param name="uri">the uri</param>
         /// <returns>returns true for a success otherwise false</returns>
-        public bool TryOpen( string uri )
+        public bool TryOpen(string uri)
         {
-            return TryOpen( uri , RTSPCredentials.Empty );
+            return TryOpen(uri, RTSPCredentials.Empty);
         }
 
         /// <summary>
@@ -529,18 +509,18 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// <param name="uri">the uri</param>
         /// <param name="credentials">the credentials</param>
         /// <returns>returns true for a success otherwise false</returns>
-        public bool TryOpen( string uri , RTSPCredentials credentials )
+        public bool TryOpen(string uri, RTSPCredentials credentials)
         {
-            if ( string.IsNullOrWhiteSpace( uri ) || credentials == null )
+            if (string.IsNullOrWhiteSpace(uri) || credentials == null)
             {
                 return false;
             }
 
             try
             {
-                lock ( _lock )
+                lock (_lock)
                 {
-                    if ( _socket.IsOpened )
+                    if (_socket.IsOpened)
                     {
                         return false;
                     }
@@ -548,16 +528,16 @@ namespace RabbitOM.Net.Rtsp.Remoting
                     _settings.Uri = uri;
                     _settings.Credentials = credentials;
 
-                    var rtspUri = RTSPUri.Create( uri );
+                    var rtspUri = RTSPUri.Create(uri);
 
-                    using ( var scope = new RTSPDisposeScope( () => _socket.Close() ) )
+                    using (var scope = new RTSPDisposeScope(() => _socket.Close()))
                     {
-                        if ( ! _socket.Open( rtspUri.Host , rtspUri.Port ) )
+                        if (!_socket.Open(rtspUri.Host, rtspUri.Port))
                         {
                             return false;
                         }
 
-                        _socket.SetLingerState( true , TimeSpan.FromSeconds( 5 ) );
+                        _socket.SetLingerState(true, TimeSpan.FromSeconds(5));
 
                         scope.ClearActions();
                     }
@@ -565,15 +545,15 @@ namespace RabbitOM.Net.Rtsp.Remoting
                     Initialize();
                 }
 
-                OnOpened( new RTSPConnectionOpenedEventArgs() );
+                OnOpened(new RTSPConnectionOpenedEventArgs());
 
                 return true;
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 UnInitialize();
 
-                OnError( new RTSPConnectionErrorEventArgs( ex ) );
+                OnError(new RTSPConnectionErrorEventArgs(ex));
             }
 
             return false;
@@ -584,9 +564,9 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// </summary>
         /// <param name="timeout">the timeout</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public bool TryConfigureTimeouts( TimeSpan timeout )
+        public bool TryConfigureTimeouts(TimeSpan timeout)
         {
-            return TryConfigureTimeouts( timeout , timeout );
+            return TryConfigureTimeouts(timeout, timeout);
         }
 
         /// <summary>
@@ -595,20 +575,20 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// <param name="receiveTimeout">the receive timeout</param>
         /// <param name="sendTimeout">the send timeout</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public bool TryConfigureTimeouts( TimeSpan receiveTimeout , TimeSpan sendTimeout )
+        public bool TryConfigureTimeouts(TimeSpan receiveTimeout, TimeSpan sendTimeout)
         {
-            lock ( _lock )
+            lock (_lock)
             {
                 bool succeed = false;
 
-                if ( _socket.SetReceiveTimeout( receiveTimeout ) )
+                if (_socket.SetReceiveTimeout(receiveTimeout))
                 {
                     _settings.ReceiveTimeout = receiveTimeout;
 
                     succeed = true;
                 }
 
-                if ( _socket.SetSendTimeout( sendTimeout ) )
+                if (_socket.SetSendTimeout(sendTimeout))
                 {
                     _settings.SendTimeout = sendTimeout;
 
@@ -627,23 +607,23 @@ namespace RabbitOM.Net.Rtsp.Remoting
             _informations.ResetAll();
             _securityManager.Initialize();
 
-            _eventListener.Start( () =>
+            _eventListener.Start(() =>
             {
-                while ( WaitEvents() )
+                while (WaitEvents())
                 {
                     HandleEvents();
                 }
 
                 HandleEvents();
-            } );
+            });
 
-            _mediaEventListener.Start( () =>
+            _mediaEventListener.Start(() =>
             {
                 while (WaitMediaEvents())
                 {
                     HandleMediaEvents();
                 }
-            } );
+            });
 
             _requestManager.Start();
 
@@ -671,7 +651,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// <returns>returns true for a success, otherwise false</returns>
         private bool WaitEvents()
         {
-            return RTSPEventQueue.Wait( _eventQueue , _eventListener.ExitHandle );
+            return RTSPEventQueue.Wait(_eventQueue, _eventListener.ExitHandle);
         }
 
         /// <summary>
@@ -679,11 +659,11 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// </summary>
         private void HandleEvents()
         {
-            while ( _eventQueue.Any() )
+            while (_eventQueue.Any())
             {
-                if ( _eventQueue.TryDequeue( out EventArgs eventArgs ) )
+                if (_eventQueue.TryDequeue(out EventArgs eventArgs))
                 {
-                    OnDispatchEvent( eventArgs );
+                    OnDispatchEvent(eventArgs);
                 }
             }
         }
@@ -694,7 +674,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// <returns>returns true for a success, otherwise false</returns>
         private bool WaitMediaEvents()
         {
-            return RTSPEventQueue.Wait( _mediaEventQueue , _mediaEventListener.ExitHandle );
+            return RTSPEventQueue.Wait(_mediaEventQueue, _mediaEventListener.ExitHandle);
         }
 
         /// <summary>
@@ -717,105 +697,105 @@ namespace RabbitOM.Net.Rtsp.Remoting
         /// Occurs when the connection has been opened
         /// </summary>
         /// <param name="e">the event args</param>
-        private void OnOpened( RTSPConnectionOpenedEventArgs e )
+        private void OnOpened(RTSPConnectionOpenedEventArgs e)
         {
-            Opened?.TryInvoke( this, e );
+            Opened?.TryInvoke(this, e);
         }
 
         /// <summary>
         /// Occurs when the connection has been closed
         /// </summary>
         /// <param name="e">the event args</param>
-        private void OnClosed( RTSPConnectionClosedEventArgs e )
+        private void OnClosed(RTSPConnectionClosedEventArgs e)
         {
-            Closed?.TryInvoke( this , e );
+            Closed?.TryInvoke(this, e);
         }
 
         /// <summary>
         /// Occurs when a message has been sended
         /// </summary>
         /// <param name="e"></param>
-        private void OnMessageSended( RTSPMessageSendedEventArgs e )
+        private void OnMessageSended(RTSPMessageSendedEventArgs e)
         {
             _status.KeepStatusActive();
 
-            MessageSended?.TryInvoke( this , e );
+            MessageSended?.TryInvoke(this, e);
         }
 
         /// <summary>
         /// Occurs when a message has been received
         /// </summary>
         /// <param name="e">the event args</param>
-        private void OnMessageReceived( RTSPMessageReceivedEventArgs e )
+        private void OnMessageReceived(RTSPMessageReceivedEventArgs e)
         {
             _status.KeepStatusActive();
 
-            MessageReceived?.TryInvoke( this , e );
+            MessageReceived?.TryInvoke(this, e);
         }
 
         /// <summary>
         /// Occurs when the data has been received
         /// </summary>
         /// <param name="e"></param>
-        private void OnDataReceived(RTSPPacketReceivedEventArgs e )
+        private void OnDataReceived(RTSPPacketReceivedEventArgs e)
         {
-            DataReceived?.TryInvoke( this , e );
+            DataReceived?.TryInvoke(this, e);
         }
 
         /// <summary>
         /// Occurs when the authentication has failed
         /// </summary>
         /// <param name="e">the event args</param>
-        private void OnAuthenticationFailed( RTSPAuthenticationFailedEventArgs e )
+        private void OnAuthenticationFailed(RTSPAuthenticationFailedEventArgs e)
         {
-            AuthenticationFailed?.TryInvoke( this , e );
+            AuthenticationFailed?.TryInvoke(this, e);
         }
 
         /// <summary>
         /// Occurs when an error has been detected
         /// </summary>
         /// <param name="e">the event args</param>
-        private void OnError( RTSPConnectionErrorEventArgs e )
+        private void OnError(RTSPConnectionErrorEventArgs e)
         {
             _status.IncreaseErrors();
 
-            Error?.TryInvoke( this , e );
+            Error?.TryInvoke(this, e);
         }
 
         /// <summary>
         /// Process the event
         /// </summary>
         /// <param name="e">the event args</param>
-        private void OnDispatchEvent( EventArgs e )
+        private void OnDispatchEvent(EventArgs e)
         {
-            switch ( e )
+            switch (e)
             {
                 case RTSPPacketReceivedEventArgs eventArgs:
-                    OnDataReceived( eventArgs );
+                    OnDataReceived(eventArgs);
                     break;
 
                 case RTSPConnectionOpenedEventArgs eventArgs:
-                    OnOpened( eventArgs );
+                    OnOpened(eventArgs);
                     break;
 
                 case RTSPConnectionClosedEventArgs eventArgs:
-                    OnClosed( eventArgs );
+                    OnClosed(eventArgs);
                     break;
 
                 case RTSPMessageSendedEventArgs eventArgs:
-                    OnMessageSended( eventArgs );
+                    OnMessageSended(eventArgs);
                     break;
 
                 case RTSPMessageReceivedEventArgs eventArgs:
-                    OnMessageReceived( eventArgs );
+                    OnMessageReceived(eventArgs);
                     break;
 
                 case RTSPAuthenticationFailedEventArgs eventArgs:
-                    OnAuthenticationFailed( eventArgs );
+                    OnAuthenticationFailed(eventArgs);
                     break;
 
                 case RTSPConnectionErrorEventArgs eventArgs:
-                    OnError( eventArgs );
+                    OnError(eventArgs);
                     break;
             }
         }

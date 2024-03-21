@@ -125,7 +125,7 @@ namespace RabbitOM.Net.Rtsp
         /// <param name="value">the header value</param>
         /// <param name="result">the output result</param>
         /// <returns>returns true for a success, otherwise false.</returns>
-        public static bool TryParse( string value , out RTSPHeaderRange result )
+        public static bool TryParse( string value , out RTSPHeaderRange? result )
         {
             result = null;
 

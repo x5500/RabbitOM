@@ -81,49 +81,49 @@ namespace RabbitOM.Net.Rtp.H264
 
 
 
-        private void OnDecodingFU_A( H264NalUnit nalunit )
+        private static void OnDecodingFU_A( H264NalUnit nalunit )
         {
             var values = nalunit.Payload.GetFuA();
 
             throw new NotImplementedException();
         }
 
-        private void OnDecodingFU_B( H264NalUnit nalunit )
+        private static void OnDecodingFU_B( H264NalUnit nalunit )
         {
             var values = nalunit.Payload.GetFuB();
 
             throw new NotImplementedException();
         }
 
-        private void OnDecodingSTAP_A( H264NalUnit nalunit )
+        private static void OnDecodingSTAP_A( H264NalUnit nalunit )
         {
             var values = nalunit.Payload.GetStapA();
 
             throw new NotImplementedException();
         }
 
-        private void OnDecodingSTAP_B( H264NalUnit nalunit )
+        private static void OnDecodingSTAP_B( H264NalUnit nalunit )
         {
             var values = nalunit.Payload.GetStapB();
 
             throw new NotImplementedException();
         }
 
-        private void OnDecodingSPS( H264NalUnit nalunit )
+        private static void OnDecodingSPS( H264NalUnit nalunit )
         {
             var values = nalunit.Payload.GetSPS();
 
             throw new NotImplementedException();
         }
 
-        private void OnDecodingPPS( H264NalUnit nalunit )
+        private static void OnDecodingPPS( H264NalUnit nalunit )
         {
             var values = nalunit.Payload.GetPPS();
 
             throw new NotImplementedException();
         }
 
-        private void OnDecoding( H264NalUnit nalunit )
+        private static void OnDecoding( H264NalUnit nalunit )
         {
             var values = nalunit.Payload.GetAllData();
             

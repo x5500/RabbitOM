@@ -10,22 +10,22 @@ namespace RabbitOM.Net.Rtsp.Clients
     /// </summary>
     internal sealed class RTSPClientSession : IDisposable
     {
-        private readonly object                                            _lock                   = null;
+        private readonly object? _lock = null;
 
-        private readonly RTSPClientConfiguration                           _configuration          = null;
+        private readonly RTSPClientConfiguration? _configuration = null;
 
-        private readonly RTSPConnection                                    _connection             = null;
+        private readonly RTSPConnection? _connection = null;
 
-        private readonly RTSPClientSessionInfos                            _informations           = null;
+        private readonly RTSPClientSessionInfos? _informations = null;
 
-        private readonly RTSPClientSessionDispatcher                       _dispatcher             = null;
+        private readonly RTSPClientSessionDispatcher? _dispatcher = null;
 
-        private RTSPClientSessionTransport                                 _transport              = null;
-        
-
+        private RTSPClientSessionTransport? _transport = null;
 
 
-        
+
+
+
 
 
 
@@ -33,19 +33,19 @@ namespace RabbitOM.Net.Rtsp.Clients
         /// Constructor
         /// </summary>
         /// <param name="sender">the sender</param>
-        internal RTSPClientSession( object sender )
+        internal RTSPClientSession(object sender)
         {
-            _lock            = new object();
-            _configuration   = new RTSPClientConfiguration();
-            _connection      = new RTSPConnection();
-            _informations    = new RTSPClientSessionInfos();
-            _dispatcher      = new RTSPClientSessionDispatcher( sender );
+            _lock = new object();
+            _configuration = new RTSPClientConfiguration();
+            _connection = new RTSPConnection();
+            _informations = new RTSPClientSessionInfos();
+            _dispatcher = new RTSPClientSessionDispatcher(sender);
         }
-        
 
 
 
-        
+
+
 
 
 
@@ -169,131 +169,128 @@ namespace RabbitOM.Net.Rtsp.Clients
         {
             try
             {
-                if ( _connection.IsOpened )
+                if (_connection.IsOpened)
                 {
                     return false;
                 }
 
                 _informations.Reset();
 
-                if ( ! _connection.TryOpen( _configuration.Uri , new RTSPCredentials( _configuration.UserName , _configuration.Password ) ) )
+                if (!_connection.TryOpen(_configuration.Uri, new RTSPCredentials(_configuration.UserName, _configuration.Password)))
                 {
-                    throw new RTSPClientException( RTSPClientErrorCode.ConnectionFailed , "Connection failed" );
+                    throw new RTSPClientException(RTSPClientErrorCode.ConnectionFailed, "Connection failed");
                 }
 
-                if ( ! _connection.TryConfigureTimeouts( _configuration.ReceiveTimeout , _configuration.SendTimeout ) )
+                if (!_connection.TryConfigureTimeouts(_configuration.ReceiveTimeout, _configuration.SendTimeout))
                 {
-                    throw new RTSPClientException( RTSPClientErrorCode.ConnectionFailed , "Failed to configure the timeout" );
+                    throw new RTSPClientException(RTSPClientErrorCode.ConnectionFailed, "Failed to configure the timeout");
                 }
 
                 RTSPInvokerResult optionsResult = _connection.Options().Invoke();
 
-                if ( optionsResult == null || ! optionsResult.Succeed )
+                if (optionsResult == null || !optionsResult.Succeed)
                 {
-                    throw new RTSPClientException( RTSPClientErrorCode.GetOptionsFailed , "Failed to invoke the options method" );
+                    throw new RTSPClientException(RTSPClientErrorCode.GetOptionsFailed, "Failed to invoke the options method");
                 }
 
-                RTSPInvokerResult describeResult = _connection.Describe().Invoke();       
+                RTSPInvokerResult describeResult = _connection.Describe().Invoke();
 
-                if ( describeResult == null || ! describeResult.Succeed )
+                if (describeResult == null || !describeResult.Succeed)
                 {
-                    throw new RTSPClientException( RTSPClientErrorCode.DescribeFailed , "Failed to invoke the describe method" );
+                    throw new RTSPClientException(RTSPClientErrorCode.DescribeFailed, "Failed to invoke the describe method");
                 }
 
-                if ( ! _informations.Descriptor.Extract( describeResult.Response.GetBody() ) )
+                if (!_informations.Descriptor.Extract(describeResult.Response.GetBody()))
                 {
-                    throw new RTSPClientException( RTSPClientErrorCode.DescribeFailed , "Failed to extract / parse the sdp" );
+                    throw new RTSPClientException(RTSPClientErrorCode.DescribeFailed, "Failed to extract / parse the sdp");
                 }
 
-                if ( ! _informations.Descriptor.SelectTrack( _configuration.MediaFormat ) )
+                if (!_informations.Descriptor.SelectTrack(_configuration.MediaFormat))
                 {
-                    throw new RTSPClientException( RTSPClientErrorCode.DescribeFailed , "Failed to select a media track" );
+                    throw new RTSPClientException(RTSPClientErrorCode.DescribeFailed, "Failed to select a media track");
                 }
 
                 RTSPInvokerResult setupResult = null;
-            
-                switch ( _configuration.DeliveryMode )
+
+                switch (_configuration.DeliveryMode)
                 {
                     case RTSPDeliveryMode.Tcp:
 
                         setupResult = _connection.Setup()
-                            .As<RTSPSetupInvoker>().SetDeliveryMode( RTSPDeliveryMode.Tcp )
-                            .As<RTSPSetupInvoker>().SetTrackUri( _informations.Descriptor.SelectedTrack.ControlUri )
+                            .As<RTSPSetupInvoker>().SetDeliveryMode(RTSPDeliveryMode.Tcp)
+                            .As<RTSPSetupInvoker>().SetTrackUri(_informations.Descriptor.SelectedTrack.ControlUri)
                             .Invoke();
 
                         break;
 
                     case RTSPDeliveryMode.Udp:
 
-                        _transport = new RTSPClientSessionUdpTransport( _configuration.RtpPort , _configuration.ReceiveTimeout );
-                        _transport.SetSession( this );
+                        _transport = new RTSPClientSessionUdpTransport(_configuration.RtpPort, _configuration.ReceiveTimeout);
+                        _transport.SetSession(this);
 
                         setupResult = _connection.Setup()
-                            .As<RTSPSetupInvoker>().SetDeliveryMode( RTSPDeliveryMode.Udp )
-                            .As<RTSPSetupInvoker>().SetTrackUri( _informations.Descriptor.SelectedTrack.ControlUri )
-                            .As<RTSPSetupInvoker>().SetUnicastPort( _configuration.RtpPort )
+                            .As<RTSPSetupInvoker>().SetDeliveryMode(RTSPDeliveryMode.Udp)
+                            .As<RTSPSetupInvoker>().SetTrackUri(_informations.Descriptor.SelectedTrack.ControlUri)
+                            .As<RTSPSetupInvoker>().SetUnicastPort(_configuration.RtpPort)
                             .Invoke();
 
                         break;
 
                     case RTSPDeliveryMode.Multicast:
 
-                        _transport = new RTSPClientSessionMulticastTransport( _configuration.MulticastAddress , _configuration.RtpPort , _configuration.TimeToLive , _configuration.ReceiveTimeout );
-                        _transport.SetSession( this );
+                        _transport = new RTSPClientSessionMulticastTransport(_configuration.MulticastAddress, _configuration.RtpPort, _configuration.TimeToLive, _configuration.ReceiveTimeout);
+                        _transport.SetSession(this);
 
                         setupResult = _connection.Setup()
-                            .As<RTSPSetupInvoker>().SetDeliveryMode( RTSPDeliveryMode.Multicast )
-                            .As<RTSPSetupInvoker>().SetTrackUri( _informations.Descriptor.SelectedTrack.ControlUri )
-                            .As<RTSPSetupInvoker>().SetMulticastAddress( _configuration.MulticastAddress )
-                            .As<RTSPSetupInvoker>().SetMulticastPort( _configuration.RtpPort  )
-                            .As<RTSPSetupInvoker>().SetMulticastTTL( _configuration.TimeToLive  )
+                            .As<RTSPSetupInvoker>().SetDeliveryMode(RTSPDeliveryMode.Multicast)
+                            .As<RTSPSetupInvoker>().SetTrackUri(_informations.Descriptor.SelectedTrack.ControlUri)
+                            .As<RTSPSetupInvoker>().SetMulticastAddress(_configuration.MulticastAddress)
+                            .As<RTSPSetupInvoker>().SetMulticastPort(_configuration.RtpPort)
+                            .As<RTSPSetupInvoker>().SetMulticastTTL(_configuration.TimeToLive)
                             .Invoke();
 
                         break;
 
                     default:
-                        throw new RTSPClientException( RTSPClientErrorCode.SetupFailed , "the delivery mode is not supported" );
-                }
-            
-                if ( setupResult == null || ! setupResult.Succeed )
-                {
-                   throw new RTSPClientException( RTSPClientErrorCode.SetupFailed , "Failed to setup the transport" );
+                        throw new RTSPClientException(RTSPClientErrorCode.SetupFailed, "the delivery mode is not supported");
                 }
 
-                if ( ! _informations.RegisterSessionId( setupResult.Response.GetHeaderSessionId() ) )
+                if (setupResult == null || !setupResult.Succeed)
                 {
-                    throw new RTSPClientException( RTSPClientErrorCode.SetupFailed , "Failed to setup the transport due to invalid session identifier" );
+                    throw new RTSPClientException(RTSPClientErrorCode.SetupFailed, "Failed to setup the transport");
+                }
+
+                if (!_informations.RegisterSessionId(setupResult.Response.GetHeaderSessionId()))
+                {
+                    throw new RTSPClientException(RTSPClientErrorCode.SetupFailed, "Failed to setup the transport due to invalid session identifier");
                 }
 
                 // Trigger the event connected before to publish DataReceived event
-                _dispatcher.DispatchEvent( new RTSPClientConnectedEventArgs( _informations.Descriptor.SelectedTrack ) );
+                _dispatcher.DispatchEvent(new RTSPClientConnectedEventArgs(_informations.Descriptor.SelectedTrack));
 
-                if ( _transport != null )
+                _transport?.Start();
+
+                RTSPInvokerResult playResult = _connection.Play().As<RTSPPlayInvoker>().SetSessionId(_informations.SessionId).Invoke();
+
+                if (playResult == null || !playResult.Succeed)
                 {
-                    _transport.Start();
-                }
-
-                RTSPInvokerResult playResult = _connection.Play().As<RTSPPlayInvoker>().SetSessionId( _informations.SessionId ).Invoke();
-
-                if ( playResult == null || ! playResult.Succeed )
-                {
-                    _connection.TearDown().As<RTSPTearDownInvoker>().SetSessionId( _informations.SessionId ).Invoke();
+                    _connection.TearDown().As<RTSPTearDownInvoker>().SetSessionId(_informations.SessionId).Invoke();
                     _transport?.Stop();
-                    _dispatcher.DispatchEvent( new RTSPClientDisconnectedEventArgs() );
+                    _dispatcher.DispatchEvent(new RTSPClientDisconnectedEventArgs());
 
-                    throw new RTSPClientException( RTSPClientErrorCode.PlayFailed , "Failed to invoke the play method" );
+                    throw new RTSPClientException(RTSPClientErrorCode.PlayFailed, "Failed to invoke the play method");
                 }
-                
+
                 _informations.TurnOnPlayingStatus();
 
                 return true;
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
                 _connection.Close();
                 _transport?.Stop();
 
-                OnException( ex );
+                OnException(ex);
             }
 
             return false;
@@ -306,10 +303,7 @@ namespace RabbitOM.Net.Rtsp.Clients
         {
             try
             {
-                if (_transport != null)
-                {
-                    _transport.Stop();
-                }
+                _transport?.Stop();
             }
             catch (Exception ex)
             {
@@ -320,7 +314,7 @@ namespace RabbitOM.Net.Rtsp.Clients
 
             try
             {
-                if ( _informations.IsSessionIdRegistered())
+                if (_informations.IsSessionIdRegistered())
                 {
                     _connection.TearDown().As<RTSPTearDownInvoker>().SetSessionId(_informations.SessionId).Invoke();
                 }
@@ -335,8 +329,8 @@ namespace RabbitOM.Net.Rtsp.Clients
                 if (_connection.IsOpened)
                 {
                     _connection.Close();
-                    
-                   _dispatcher.DispatchEvent(new RTSPClientDisconnectedEventArgs());
+
+                    _dispatcher.DispatchEvent(new RTSPClientDisconnectedEventArgs());
                 }
             }
             catch (Exception ex)
@@ -354,10 +348,7 @@ namespace RabbitOM.Net.Rtsp.Clients
         {
             try
             {
-                if (_transport != null)
-                {
-                    _transport.Stop();
-                }
+                _transport?.Stop();
             }
             catch (Exception ex)
             {
@@ -394,9 +385,9 @@ namespace RabbitOM.Net.Rtsp.Clients
         /// </summary>
         /// <param name="timeout">the timeout</param>
         /// <returns>return true for a success, otherwise false</returns>
-        public bool WaitForConnection( TimeSpan timeout )
+        public bool WaitForConnection(TimeSpan timeout)
         {
-            return _connection.WaitForConnection( timeout );
+            return _connection.WaitForConnection(timeout);
         }
 
         /// <summary>
@@ -418,25 +409,25 @@ namespace RabbitOM.Net.Rtsp.Clients
             {
                 RTSPInvokerResult result = null;
 
-                if ( _informations.IsSessionIdRegistered() )
+                if (_informations.IsSessionIdRegistered())
                 {
-                    result = _connection.KeepAlive( _configuration.KeepAliveType ).As<RTSPKeepAliveInvoker>().SetSessionId( _informations.SessionId ).Invoke();
+                    result = _connection.KeepAlive(_configuration.KeepAliveType).As<RTSPKeepAliveInvoker>().SetSessionId(_informations.SessionId).Invoke();
                 }
                 else
                 {
                     result = _connection.Options().Invoke();
                 }
 
-                if ( result == null || ! result.Succeed )
+                if (result == null || !result.Succeed)
                 {
-                    throw new Exception( "Failed to ping the session" );
+                    throw new Exception("Failed to ping the session");
                 }
 
                 return true;
             }
-            catch ( Exception ex )
+            catch (Exception ex)
             {
-                OnException( ex );
+                OnException(ex);
             }
 
             return false;
@@ -457,20 +448,20 @@ namespace RabbitOM.Net.Rtsp.Clients
         {
             _connection.PacketReceived -= OnDataReceived;
         }
-        
 
 
 
-        
+
+
 
         /// <summary>
         /// Occurs when a packet has been received
         /// </summary>
         /// <param name="sender">the sender</param>
         /// <param name="e">the event args</param>
-        private void OnDataReceived(object sender, RTSPPacketReceivedEventArgs e )
+        private void OnDataReceived(object? sender, RTSPPacketReceivedEventArgs e)
         {
-            _dispatcher.DispatchEvent( e );
+            _dispatcher.DispatchEvent(e);
         }
 
 
@@ -478,21 +469,21 @@ namespace RabbitOM.Net.Rtsp.Clients
         /// Occurs when some session exception has been raised
         /// </summary>
         /// <param name="ex">the exception</param>
-        private void OnException( Exception ex )
+        private void OnException(Exception ex)
         {
-            if ( ex == null )
+            if (ex == null)
             {
                 return;
             }
 
-            if ( ex is RTSPClientException )
+            if (ex is RTSPClientException)
             {
                 var exception = ex as RTSPClientException;
 
-                _dispatcher.DispatchEvent( new RTSPClientErrorEventArgs( exception.ErrorCode , exception.Message ) );
+                _dispatcher.DispatchEvent(new RTSPClientErrorEventArgs(exception.ErrorCode, exception.Message));
             }
-            
-            System.Diagnostics.Debug.WriteLine( ex );
+
+            System.Diagnostics.Debug.WriteLine(ex);
         }
     }
 }

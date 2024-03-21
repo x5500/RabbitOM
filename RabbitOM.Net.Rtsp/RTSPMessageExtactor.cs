@@ -10,17 +10,17 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     internal sealed class RTSPMessageExtactor : IDisposable
     {
-        private readonly object           _lock              = null;
+        private readonly object? _lock              = null;
 
         private readonly long             _limit             = 0;
 
-        private readonly RTSPMemoryStream _stream            = null;
+        private readonly RTSPMemoryStream? _stream            = null;
 
-        private readonly StringBuilder    _valueString       = null;
+        private readonly StringBuilder? _valueString       = null;
 
-        private RTSPPacket                _interleavedPacket = null;
+        private RTSPPacket? _interleavedPacket = null;
 
-        private RTSPMessageResponse       _response          = null;
+        private RTSPMessageResponse? _response          = null;
 
         private int                       _valueByte         = -1; // The name contains byte keywork but this is int value and not a byte value type. Please refer to microsoft stream implementation and definition of the method called ReadByte which returns a int and a byte. For only this case, strongly prefer this instead of using nullable value
 

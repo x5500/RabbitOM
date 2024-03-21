@@ -8,9 +8,9 @@ namespace RabbitOM.Net.Rtsp.Remoting.Invokers
     /// </summary>
     public class RTSPInvoker : IRTSPInvoker
     {
-        private readonly RTSPProxy                 _proxy      = null;
+        private readonly RTSPProxy? _proxy      = null;
 
-        private readonly RTSPMessageRequestBuilder _builder    = null;
+        private readonly RTSPMessageRequestBuilder? _builder    = null;
 
 
 
@@ -67,7 +67,7 @@ namespace RabbitOM.Net.Rtsp.Remoting.Invokers
         /// <returns>returns the current instance</returns>
         public IRTSPInvoker AddHeader( string name , string value )
         {
-            if ( _builder.CanAddHeader( name , value ) )
+            if (RTSPMessageRequestBuilder.CanAddHeader( name , value ) )
             {
                 _builder.AddHeader( name , value );
             }
@@ -82,7 +82,7 @@ namespace RabbitOM.Net.Rtsp.Remoting.Invokers
         /// <returns>returns the current instance</returns>
         public virtual IRTSPInvoker AddHeader( RTSPHeader header )
         {
-            if ( _builder.CanAddHeader( header ) )
+            if (RTSPMessageRequestBuilder.CanAddHeader( header ) )
             {
                 _builder.AddHeader( header );
             }

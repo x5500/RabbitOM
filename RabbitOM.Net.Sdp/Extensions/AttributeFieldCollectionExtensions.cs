@@ -14,9 +14,9 @@ namespace RabbitOM.Net.Sdp.Extensions
         /// <param name="collection">the collection</param>
         /// <param name="name">the name</param>
         /// <returns>returns an instance</returns>
-        public static AttributeField GetByName( this AttributeFieldCollection collection , string name)
+        public static AttributeField GetByName(this AttributeFieldCollection collection, string name)
         {
-            return GetByName( collection , name , true );
+            return GetByName(collection, name, true);
         }
 
         /// <summary>
@@ -28,21 +28,10 @@ namespace RabbitOM.Net.Sdp.Extensions
         /// <returns>returns an instance</returns>
         /// <exception cref="ArgumentNullException"/>
         /// <exception cref="InvalidOperationException"/>
-        public static AttributeField GetByName( this AttributeFieldCollection collection , string name , bool ignoreCase )
+        public static AttributeField GetByName(this AttributeFieldCollection collection, string name, bool ignoreCase)
         {
-            if ( collection == null )
-            {
-                throw new ArgumentNullException( nameof( collection ) );
-            }
-
-            var result = collection.First( field => AttributeField.Equals( field , name , ignoreCase ) );
-
-            if ( result == null )
-            {
-                throw new InvalidOperationException("The returns field is null");
-            }
-
-            return result;
+            ArgumentNullException.ThrowIfNull(collection, nameof(collection));
+            return collection.First(field => AttributeField.Equals(field, name, ignoreCase)) ?? throw new InvalidOperationException("The returns field is null");
         }
 
         /// <summary>
@@ -51,9 +40,9 @@ namespace RabbitOM.Net.Sdp.Extensions
         /// <param name="collection">the collection</param>
         /// <param name="name">the name</param>
         /// <returns>returns an instance,otherwise null</returns>
-        public static AttributeField FindByName( this AttributeFieldCollection collection , string name )
+        public static AttributeField? FindByName(this AttributeFieldCollection collection, string name)
         {
-            return FindByName( collection , name , true );
+            return FindByName(collection, name, true);
         }
 
         /// <summary>
@@ -64,14 +53,10 @@ namespace RabbitOM.Net.Sdp.Extensions
         /// <param name="ignoreCase">set true to ignore the case</param>
         /// <returns>returns an instance,otherwise null</returns>
         /// <exception cref="ArgumentNullException"/>
-        public static AttributeField FindByName( this AttributeFieldCollection collection , string name , bool ignoreCase )
+        public static AttributeField? FindByName(this AttributeFieldCollection collection, string name, bool ignoreCase)
         {
-            if ( collection == null )
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
-
-            return collection.FirstOrDefault( field => AttributeField.Equals( field , name , ignoreCase ) );
+            ArgumentNullException.ThrowIfNull(collection, nameof(collection));
+            return collection.FirstOrDefault(field => AttributeField.Equals(field, name, ignoreCase));
         }
 
         /// <summary>
@@ -81,9 +66,9 @@ namespace RabbitOM.Net.Sdp.Extensions
         /// <param name="name">the name</param>
         /// <param name="result">the result</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public static bool TryGetByName( this AttributeFieldCollection collection , string name , out AttributeField result )
+        public static bool TryGetByName(this AttributeFieldCollection collection, string name, out AttributeField result)
         {
-            return TryGetByName( collection , name, true, out result);
+            return TryGetByName(collection, name, true, out result);
         }
 
         /// <summary>
@@ -94,9 +79,9 @@ namespace RabbitOM.Net.Sdp.Extensions
         /// <param name="ignoreCase">set to true to ignore the case</param>
         /// <param name="result">the result</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public static bool TryGetByName( this AttributeFieldCollection collection , string name, bool ignoreCase , out AttributeField result )
+        public static bool TryGetByName(this AttributeFieldCollection collection, string name, bool ignoreCase, out AttributeField result)
         {
-            result = collection?.FirstOrDefault( field => AttributeField.Equals( field , name , ignoreCase ) );
+            result = collection?.FirstOrDefault(field => AttributeField.Equals(field, name, ignoreCase));
 
             return result != null;
         }

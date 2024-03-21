@@ -14,13 +14,13 @@ namespace RabbitOM.Net.Rtsp
 
 
 
-        private IPAddress   _ipAddress       = null;
+        private IPAddress? _ipAddress       = null;
 
-        private IPEndPoint  _groupEP         = null;
+        private IPEndPoint? _groupEP         = null;
 
-        private Socket      _socket          = null;
+        private Socket? _socket          = null;
 
-        private byte[]      _buffer          = null;
+        private byte[]? _buffer          = null;
 
 
 
@@ -215,7 +215,7 @@ namespace RabbitOM.Net.Rtsp
         /// Occurs when an error has been detected
         /// </summary>
         /// <param name="exception">the exception</param>
-        private void OnError( Exception exception )
+        private static void OnError( Exception exception )
         {
             if ( exception == null )
             {

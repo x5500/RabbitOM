@@ -7,13 +7,13 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     public sealed class RTSPMessageResponse : RTSPMessage
     {
-        private readonly RTSPMessageStatus     _status      = null;
+        private readonly RTSPMessageStatus? _status      = null;
 
-        private readonly RTSPHeaderCollection  _headers     = null;
+        private readonly RTSPHeaderCollection? _headers     = null;
 
-        private readonly RTSPMessageBody       _body        = null;
+        private readonly RTSPMessageBody? _body        = null;
 
-        private readonly RTSPMessageVersion    _version     = null;
+        private readonly RTSPMessageVersion? _version     = null;
 
 
 

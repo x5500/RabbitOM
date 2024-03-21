@@ -10,13 +10,13 @@ namespace RabbitOM.Net.Rtsp
     {
         private readonly string              _name        = string.Empty;
 
-        private readonly RTSPEventWaitHandle _eventExit   = null;
+        private readonly RTSPEventWaitHandle? _eventExit   = null;
 
-        private Thread                       _thread      = null;
+        private Thread? _thread      = null;
 
-        private Action                       _routine     = null;
+        private Action? _routine     = null;
 
-        private Exception                    _exception   = null;
+        private Exception? _exception   = null;
 
 
 

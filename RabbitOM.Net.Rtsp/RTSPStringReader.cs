@@ -8,7 +8,7 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     internal sealed class RTSPStringReader : IDisposable
     {
-        private readonly StringReader _reader = null;
+        private readonly StringReader? _reader = null;
 
 
 

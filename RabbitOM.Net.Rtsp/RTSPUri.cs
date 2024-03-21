@@ -323,7 +323,7 @@ namespace RabbitOM.Net.Rtsp
         /// <param name="value">the value</param>
         /// <param name="result">the uri</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public static bool TryParse( string value , out RTSPUri result )
+        public static bool TryParse( string value , out RTSPUri? result )
         {
             result = null;
 

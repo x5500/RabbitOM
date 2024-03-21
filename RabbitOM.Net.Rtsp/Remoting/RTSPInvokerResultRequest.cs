@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
     /// </summary>
     public sealed class RTSPInvokerResultRequest
     {
-        private readonly RTSPMessageRequest _message = null;
+        private readonly RTSPMessageRequest? _message = null;
 
 
 

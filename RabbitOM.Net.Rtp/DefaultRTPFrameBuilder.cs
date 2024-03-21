@@ -5,14 +5,14 @@ namespace RabbitOM.Net.Rtp
 {
     public sealed class DefaultRTPFrameBuilder : RTPFrameBuilder
     {
-        private readonly object _lock = new object();
-        
-        private readonly Queue<RTPPacket> _packets = new Queue<RTPPacket>();
-        
-        private readonly Queue<int> _sizes = new Queue<int>();
-        
-        private RTPPacket _lastPacket;
-       
+        private readonly object _lock = new();
+
+        private readonly Queue<RTPPacket> _packets = new();
+
+        private readonly Queue<int> _sizes = new();
+
+        private RTPPacket? _lastPacket;
+
         private int _frameSize;
 
 
@@ -26,11 +26,11 @@ namespace RabbitOM.Net.Rtp
             get => _lock;
         }
 
-        public RTPPacket LastPacket
+        public RTPPacket? LastPacket
         {
-            get 
+            get
             {
-                lock ( _lock )
+                lock (_lock)
                 {
                     return _lastPacket;
                 }
@@ -43,27 +43,27 @@ namespace RabbitOM.Net.Rtp
 
         // TODO: Change the signature, replace the byte array by a packet class and move the parse statement into the sink class.
 
-        public override bool TryAddPacket( byte[] buffer )
+        public override bool TryAddPacket(byte[] buffer)
         {
-            if ( ! RTPPacket.TryParse( buffer , out RTPPacket packet ) )
+            if (!RTPPacket.TryParse(buffer, out RTPPacket packet))
             {
                 return false;
             }
 
-            lock ( _lock )
+            lock (_lock)
             {
-                _packets.Enqueue( packet );
+                _packets.Enqueue(packet);
                 _lastPacket = packet;
 
-                OnPacketAdded( packet );
-            
+                OnPacketAdded(packet);
+
                 return true;
             }
         }
 
         public override bool CanBuildFrame()
         {
-            lock ( _lock )
+            lock (_lock)
             {
                 return _sizes.Count > 0;
             }
@@ -71,24 +71,24 @@ namespace RabbitOM.Net.Rtp
 
         public override RTPFrame BuildFrame()
         {
-            lock ( _lock )
+            lock (_lock)
             {
-                var packets = new RTPPacket[ _sizes.Dequeue() ];
+                var packets = new RTPPacket[_sizes.Dequeue()];
 
                 int index = 0;
 
-                while ( index < packets.Length )
+                while (index < packets.Length)
                 {
-                    packets[ index ++ ] = _packets.Dequeue();
+                    packets[index++] = _packets.Dequeue();
                 }
 
-                return new RTPFrame( packets );
+                return new RTPFrame(packets);
             }
         }
 
         public override void Clear()
         {
-            lock ( _lock )
+            lock (_lock)
             {
                 _packets.Clear();
                 _sizes.Clear();
@@ -96,9 +96,9 @@ namespace RabbitOM.Net.Rtp
             }
         }
 
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
-            if ( disposing )
+            if (disposing)
             {
                 Clear();
             }
@@ -112,13 +112,13 @@ namespace RabbitOM.Net.Rtp
 
 
 
-        private void OnPacketAdded( RTPPacket packet )
+        private void OnPacketAdded(RTPPacket packet)
         {
             _frameSize++;
 
-            if ( packet.Marker )
+            if (packet.Marker)
             {
-                _sizes.Enqueue( _frameSize );
+                _sizes.Enqueue(_frameSize);
                 _frameSize = 0;
             }
         }

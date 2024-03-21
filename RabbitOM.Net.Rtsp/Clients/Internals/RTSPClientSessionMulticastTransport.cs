@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp.Clients
     /// </summary>
     internal sealed class RTSPClientSessionMulticastTransport : RTSPClientSessionTransport
     {
-        private readonly RTSPMulticastSocket _socket    = null;
+        private readonly RTSPMulticastSocket? _socket    = null;
         
         private readonly string                      _address   = string.Empty;
 

@@ -32,13 +32,14 @@ namespace RabbitOM.Net.Sdp.Tests.ConsoleApp
                                     
             for ( int i = 1; i <= 10; ++ i )
             {
-                var mediaDescription = new MediaDescriptionField();
-
-                mediaDescription.Payload = 1 + i;
-                mediaDescription.Port = 10 + i;
-                mediaDescription.Profile = ProfileType.SAVP;
-                mediaDescription.Protocol = ProtocolType.RTP;
-                mediaDescription.Type = MediaType.Video;
+                var mediaDescription = new MediaDescriptionField
+                {
+                    Payload = 1 + i,
+                    Port = 10 + i,
+                    Profile = ProfileType.SAVP,
+                    Protocol = ProtocolType.RTP,
+                    Type = MediaType.Video
+                };
 
                 mediaDescription.Encryption.Key = "myKey"+i.ToString();
                 mediaDescription.Encryption.Method = "myMethod"+i.ToString();

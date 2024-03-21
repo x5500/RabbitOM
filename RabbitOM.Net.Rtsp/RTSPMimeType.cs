@@ -110,7 +110,7 @@ namespace RabbitOM.Net.Rtsp
         /// <param name="value">the value to be parsed</param>
         /// <param name="result">the output result</param>
         /// <returns>returns true for a success, otherwise false</returns>
-        public static bool TryParse( string value , out RTSPMimeType result )
+        public static bool TryParse( string value , out RTSPMimeType? result )
         {
             result = null;
 
@@ -119,7 +119,7 @@ namespace RabbitOM.Net.Rtsp
                 return false;
             }
 
-            var tokens = value.Trim().Split( new char[] { '/' } );
+            var tokens = value.Trim().Split( ['/'] );
 
             if ( tokens == null || tokens.Length <= 0 )
             {

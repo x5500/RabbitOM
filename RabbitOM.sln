@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitOM.Net.Sdp.Tests", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitOM.Net.Sdp.Tests.ConsoleApp", "RabbitOM.Net.Sdp.Tests.ConsoleApp\RabbitOM.Net.Sdp.Tests.ConsoleApp.csproj", "{95065E8B-82AD-4F59-9D96-BAB3F71FF817}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RabbitOM.Net.Rtsp.Tests.ConsoleApp", "RabbitOM.Net.Rtsp.Tests.ConsoleApp\RabbitOM.Net.Rtsp.Tests.ConsoleApp.csproj", "{69175333-85EA-47ED-87B1-6810AC08229A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,18 @@ Global
 		{95065E8B-82AD-4F59-9D96-BAB3F71FF817}.Release|x64.Build.0 = Release|Any CPU
 		{95065E8B-82AD-4F59-9D96-BAB3F71FF817}.Release|x86.ActiveCfg = Release|Any CPU
 		{95065E8B-82AD-4F59-9D96-BAB3F71FF817}.Release|x86.Build.0 = Release|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Debug|x64.Build.0 = Debug|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Debug|x86.Build.0 = Debug|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Release|x64.ActiveCfg = Release|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Release|x64.Build.0 = Release|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Release|x86.ActiveCfg = Release|Any CPU
+		{69175333-85EA-47ED-87B1-6810AC08229A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

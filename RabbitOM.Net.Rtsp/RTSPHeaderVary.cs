@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp
     /// </summary>
     public sealed class RTSPHeaderVary : RTSPHeader
     {
-        private readonly RTSPStringCollection _headerNames = null;
+        private readonly RTSPStringCollection? _headerNames = null;
 
 
 
@@ -93,7 +93,7 @@ namespace RabbitOM.Net.Rtsp
         /// <param name="value">the header value</param>
         /// <param name="result">the output result</param>
         /// <returns>returns true for a success, otherwise false.</returns>
-        public static bool TryParse( string value , out RTSPHeaderVary result )
+        public static bool TryParse( string value , out RTSPHeaderVary? result )
         {
             result = null;
 

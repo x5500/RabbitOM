@@ -7,7 +7,7 @@ namespace RabbitOM.Net.Rtsp.Remoting
     /// </summary>
     public class RTSPMessageSendedEventArgs : EventArgs
     {
-        private readonly RTSPMessage _message = null;
+        private readonly RTSPMessage? _message = null;
 
         /// <summary>
         /// Constructor

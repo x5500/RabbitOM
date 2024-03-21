@@ -7,17 +7,17 @@ namespace RabbitOM.Net.Rtsp.Remoting
     /// </summary>
     internal sealed class RTSPProxyRequestHandler : IDisposable
     {
-        private readonly object                _lock               = null;
+        private readonly object? _lock               = null;
 
         private bool                           _succeed            = false;
 
         private bool                           _isCanceled         = false;
 
-        private readonly RTSPEventWaitHandle   _completionHandle   = null;
+        private readonly RTSPEventWaitHandle? _completionHandle   = null;
 
-        private readonly RTSPMessageRequest    _request            = null;
+        private readonly RTSPMessageRequest? _request            = null;
 
-        private RTSPMessageResponse            _response           = null;
+        private RTSPMessageResponse? _response           = null;
 
 
 

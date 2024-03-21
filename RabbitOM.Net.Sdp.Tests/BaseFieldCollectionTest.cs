@@ -6,7 +6,7 @@ namespace RabbitOM.Net.Sdp.Tests
     [TestClass]
     public class BaseFieldCollectionTest
     {
-        public readonly BaseFieldCollection _collection = new BaseFieldCollection();
+        public readonly BaseFieldCollection _collection = new();
         
         [TestMethod]
         public void SyncRoot_Excpect_IsNotNull()

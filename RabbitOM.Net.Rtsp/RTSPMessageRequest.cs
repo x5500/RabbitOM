@@ -11,11 +11,11 @@ namespace RabbitOM.Net.Rtsp
 
         private readonly string                 _uri      = string.Empty;
 
-        private readonly RTSPHeaderCollection   _headers  = null;
+        private readonly RTSPHeaderCollection? _headers  = null;
 
-        private readonly RTSPMessageBody        _body     = null;
+        private readonly RTSPMessageBody? _body     = null;
 
-        private readonly RTSPMessageVersion     _version  = null;
+        private readonly RTSPMessageVersion? _version  = null;
 
 
 
